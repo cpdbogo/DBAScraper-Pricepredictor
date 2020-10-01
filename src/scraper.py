@@ -19,7 +19,7 @@ class DBAScraper():
     
     def __init__(self):
         """Initialize various files."""
-        with open(r'../data/allowed_models.json') as json_file:
+        with open(os.path.join(sys.path[0], r'../data/allowed_models.json')) as json_file:
             allowed_models = json.load(json_file)  # Load allowed models.
         self.allowed_models = allowed_models
         self.final_df = pd.DataFrame()
@@ -126,11 +126,11 @@ class DBAScraper():
         temp_df = temp_df.append(append_list)
         for index, row in temp_df.iterrows():
             self.fuzzy_check(row)
-        self.temp_df.to_json(os.path.join(sys.path[0], r'../data/latest_scrape_results.json', orient='records', lines=True))
+        self.temp_df.to_json(os.path.join(sys.path[0], r'../data/latest_scrape_results.json'), orient='records', lines=True)
 
         dummified = pd.get_dummies(self.temp_df, columns=['condition', 'model'])
         self.final_df = self.final_df.append(dummified)
         self.final_df = self.final_df.fillna(0)
         self.final_df = self.final_df.drop_duplicates()
-        self.final_df.to_json(os.path.join(sys.path[0], r'../data/scraped_dataframe_records_dummified.json', orient='records'))
+        self.final_df.to_json(os.path.join(sys.path[0], r'../data/scraped_dataframe_records_dummified.json'), orient='records')
         self.printColor("#### Scraping done ####", "blue")
