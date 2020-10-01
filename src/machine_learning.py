@@ -1,5 +1,5 @@
 """
-Used making tensorflow a tensorflow moden and predicting prices on DBA.dk for Bang & Olufsen ads.
+Used for making a tensorflow model and predicting prices on DBA.dk for Bang & Olufsen ads.
 
 This was made for a school project about machine learning.
 """
