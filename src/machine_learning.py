@@ -3,17 +3,19 @@ Used making tensorflow a tensorflow moden and predicting prices on DBA.dk for Ba
 
 This was made for a school project about machine learning.
 """
-import pandas as pd
 import json
+import os
+import sys
+import time
+
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+import tensorflow as tf
 from fuzzywuzzy import process
+from keras import optimizers
 from keras.layers import Dense
 from keras.models import Sequential, load_model
-from keras import optimizers
-import tensorflow as tf
-import os
-import time
 from sklearn import preprocessing
 
 
@@ -33,15 +35,15 @@ class machineLearning():
         opt = optimizers.Adam(epsilon=1.0)
         model.compile(loss='mse', optimizer=opt)  # This model seems to be the one that gives the most accurate results.
 
-        model.save(r'../data/model.h5')
+        model.save(os.path.join(sys.path[0], r'../data/model.h5'))
 
     def load_model(self):
         """Load the model. Create it and save to file if it doesn't exist."""
-        if os.path.exists(r'../data/model.h5'):
-            return load_model(r'../data/model.h5')
+        if os.path.exists(os.path.join(sys.path[0], r'../data/model.h5')):
+            return load_model(os.path.join(sys.path[0], r'../data/model.h5'))
         else:
             self.build_model()
-            return load_model(r'../data/model.h5')
+            return load_model(os.path.join(sys.path[0], r'../data/model.h5'))
 
     def train_or_predict(self, iterations, predict=[]):
         """
@@ -51,12 +53,12 @@ class machineLearning():
         """
         # Load dummified dataframe records create by DBA scrape
         # Tell user to scrape if file doesn't exist
-        if os.path.exists(r'../data/scraped_dataframe_records_dummified.json') is not True and predict != []:
+        if os.path.exists(os.path.join(sys.path[0], r'../data/scraped_dataframe_records_dummified.json')) is not True and predict != []:
             print("No training data available - do a scrape to get it")
             time.sleep(3)
             return
         else:
-            training_data = pd.read_json(r'../data/scraped_dataframe_records_dummified.json')
+            training_data = pd.read_json(os.path.join(sys.path[0], r'../data/scraped_dataframe_records_dummified.json'))
         model = self.load_model()
 
         x = pd.DataFrame(training_data.loc[:, training_data.columns != 'price']).values.tolist()  # list_without_price
@@ -82,7 +84,7 @@ class machineLearning():
         lx = list(range(0, len(history.history['loss'])))
         ly = history.history['loss']
         plt.plot(lx, ly, c='red')
-        model.save(r'../data/model.h5')
+        model.save(os.path.join(sys.path[0], r'../data/model.h5'))
         print("Done training, close graph to return to main menu")
         plt.show()  # Show the training progress in a graph
 
@@ -96,7 +98,7 @@ class machineLearning():
         model = input("Model: ")
         # Make sure the chosen model is available for use.
         # If it isn't, make a suggestion for the nearest available model.
-        with open(r'../data/allowed_models.json') as json_file:
+        with open(os.path.join(sys.path[0], r'../data/allowed_models.json')) as json_file:
             allowed_models = json.load(json_file)
             if model not in allowed_models:
                 closest_match = process.extract(model, allowed_models, limit=1)

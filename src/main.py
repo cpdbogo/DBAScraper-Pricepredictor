@@ -1,8 +1,10 @@
 """Handle CLI GUI/ Main menu."""
 import time
+
 from simple_term_menu import TerminalMenu
-from scraper import DBAScraper
+
 from machine_learning import machineLearning
+from scraper import DBAScraper
 
 
 class mainPage():

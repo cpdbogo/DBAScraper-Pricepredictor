@@ -5,10 +5,12 @@ Used for scraping Bang & Olufsen ads from www.DBA.dk.
 This was made for a school project about machine learning.
 """
 
-import requests
 import json
-import pandas as pd
 import os
+import sys
+
+import pandas as pd
+import requests
 from fuzzywuzzy import process
 
 
@@ -22,13 +24,13 @@ class DBAScraper():
         self.allowed_models = allowed_models
         self.final_df = pd.DataFrame()
 
-        if os.path.exists(r'../data/scraped_dataframe_records_dummified.json') is not True:  # If no dummified records are available,
+        if os.path.exists(os.path.join(sys.path[0], r'../data/scraped_dataframe_records_dummified.json')) is not True:  # If no dummified records are available,
             dummy_col = pd.DataFrame()                                                       # create an empy dataframe with the dummy collumns.
-            with open(r'../data/dummy_columns.json') as json_file:
+            with open(os.path.join(sys.path[0], r'../data/dummy_columns.json')) as json_file:
                 dummy_col = json.load(json_file)
                 self.final_df = pd.DataFrame(columns=dummy_col)
         else:
-            self.final_df = pd.read_json(r'../data/scraped_dataframe_records_dummified.json')
+            self.final_df = pd.read_json(os.path.join(sys.path[0], r'../data/scraped_dataframe_records_dummified.json'))
 
         self.temp_df = pd.DataFrame(columns=['price', 'watt', 'condition', 'model'])  # For loading the scraping results.
 
@@ -124,11 +126,11 @@ class DBAScraper():
         temp_df = temp_df.append(append_list)
         for index, row in temp_df.iterrows():
             self.fuzzy_check(row)
-        self.temp_df.to_json(r'../data/latest_scrape_results.json', orient='records', lines=True)
+        self.temp_df.to_json(os.path.join(sys.path[0], r'../data/latest_scrape_results.json', orient='records', lines=True))
 
         dummified = pd.get_dummies(self.temp_df, columns=['condition', 'model'])
         self.final_df = self.final_df.append(dummified)
         self.final_df = self.final_df.fillna(0)
         self.final_df = self.final_df.drop_duplicates()
-        self.final_df.to_json(r'../data/scraped_dataframe_records_dummified.json', orient='records')
+        self.final_df.to_json(os.path.join(sys.path[0], r'../data/scraped_dataframe_records_dummified.json', orient='records'))
         self.printColor("#### Scraping done ####", "blue")
