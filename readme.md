@@ -2,12 +2,12 @@
 I made this project for a machine learning course.  
 It includes a scraper for scraping Bang & Olufsen ads from DBA and a module for predicting prices for your own Bang & Olufsen ads.
 
-This project was create over a period of 4 days,
+This project was created over a period of 4 days,
 
 
 ### By: Casper P
-#### Teacher: Jakup Wenningsstedt
-#### School: Mercantec, Viborg, Denmark
+### Teacher: Jakup Wenningsstedt
+### School: Mercantec, Viborg, Denmark
 
 ---
 ### **Setup**
@@ -21,4 +21,4 @@ Confirm on DBA that your price looks right.. If it's too out of touch with reali
 <!-- ![Learning Curve](example_curve.png) -->
 
 ---
-To add new models to the predictor, add them in both `data/allowed_models.json` and `data/dummy_columns.json` 
+To add new models to the predictor, add them in both `data/allowed_models.json` and `data/dummy_columns.json`.
