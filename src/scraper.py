@@ -65,7 +65,7 @@ class DBAScraper():
         """
         url = "https://api.dba.dk/api/v2/ads/search/intermingled?q=" + search_query + "&pn=" + str(page_num) + "&ps=100&format=json"
         self.printColor("### Sending API Request " + url + " ###", "blue")
-        response = requests.get(url, headers={"DbaApiKey": "16ca0020-560b-4ee4-f603-08d81dcb3572", "User-Agent": "dba/6.5.0 iPhone 13.5.1 (iPhone10,6)"})
+        response = requests.get(url, headers={"DbaApiKey": "54c1a7af-42ea-47f3-dac9-08d886f5a4d6", "User-Agent": "dba/6.8.0 iPad 14.1 (iPad6,11)"})
         self.printColor("### Got answer ###", "green")
         return json.loads(response.text)
 
